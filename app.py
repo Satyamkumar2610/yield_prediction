@@ -316,7 +316,6 @@ st.markdown("""
         <span class="brand-icon">🌾</span>
         <span class="brand-name">CropYield Predictor</span>
     </div>
-    <span class="nav-tag">ML-Powered</span>
 </div>
 """, unsafe_allow_html=True)
 
