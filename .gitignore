@@ -15,11 +15,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Models and large files
-*.pkl
+# Large model files (regenerate with: python3 ml_pipeline.py)
 *.h5
 *.model
 *.pb
+models/crop_yield_rf_model.pkl
 
 # Mac system files
 .DS_Store

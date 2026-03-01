@@ -1,0 +1,258 @@
+{
+  "raw_shapes": {
+    "yield": [
+      56717,
+      12
+    ],
+    "pesticides": [
+      4349,
+      7
+    ],
+    "rainfall": [
+      6727,
+      3
+    ],
+    "temperature": [
+      71311,
+      3
+    ]
+  },
+  "shape_after_merge": [
+    28248,
+    7
+  ],
+  "duplicates_removed": 2310,
+  "shape_after_dedup": [
+    25938,
+    7
+  ],
+  "missing_before": {
+    "Area": 0,
+    "Item": 0,
+    "Year": 0,
+    "hg/ha_yield": 0,
+    "average_rain_fall_mm_per_year": 6,
+    "pesticides_tonnes": 0,
+    "avg_temp": 0
+  },
+  "missing_after": {
+    "Area": 0,
+    "Item": 0,
+    "Year": 0,
+    "hg/ha_yield": 0,
+    "average_rain_fall_mm_per_year": 0,
+    "pesticides_tonnes": 0,
+    "avg_temp": 0
+  },
+  "outliers_removed": 1918,
+  "shape_after_outlier": [
+    24020,
+    7
+  ],
+  "model_results": [
+    {
+      "model": "Linear Regression",
+      "MAE": 42973.5,
+      "RMSE": 53843.07,
+      "R2": 0.0379
+    },
+    {
+      "model": "Decision Tree",
+      "MAE": 3572.49,
+      "RMSE": 10465.96,
+      "R2": 0.9637
+    },
+    {
+      "model": "Random Forest",
+      "MAE": 3380.47,
+      "RMSE": 8404.44,
+      "R2": 0.9766
+    }
+  ],
+  "feature_importance_rf": [
+    {
+      "Feature": "Item",
+      "Importance": 0.64983996708425
+    },
+    {
+      "Feature": "pesticides_tonnes",
+      "Importance": 0.09604560991894148
+    },
+    {
+      "Feature": "average_rain_fall_mm_per_year",
+      "Importance": 0.08079212505259901
+    },
+    {
+      "Feature": "Area",
+      "Importance": 0.07903457206467612
+    },
+    {
+      "Feature": "avg_temp",
+      "Importance": 0.06654659977810247
+    },
+    {
+      "Feature": "Year",
+      "Importance": 0.02774112610143096
+    }
+  ],
+  "feature_importance_dt": [
+    {
+      "Feature": "Item",
+      "Importance": 0.6495050702754321
+    },
+    {
+      "Feature": "pesticides_tonnes",
+      "Importance": 0.08972661006527186
+    },
+    {
+      "Feature": "Area",
+      "Importance": 0.08730711333463483
+    },
+    {
+      "Feature": "average_rain_fall_mm_per_year",
+      "Importance": 0.08328097138246564
+    },
+    {
+      "Feature": "avg_temp",
+      "Importance": 0.060662805243191606
+    },
+    {
+      "Feature": "Year",
+      "Importance": 0.02951742969900405
+    }
+  ],
+  "feature_names": [
+    "Area",
+    "Item",
+    "Year",
+    "average_rain_fall_mm_per_year",
+    "pesticides_tonnes",
+    "avg_temp"
+  ],
+  "unique_areas": [
+    "Albania",
+    "Algeria",
+    "Angola",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas",
+    "Bahrain",
+    "Bangladesh",
+    "Belarus",
+    "Belgium",
+    "Botswana",
+    "Brazil",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cameroon",
+    "Canada",
+    "Central African Republic",
+    "Chile",
+    "Colombia",
+    "Croatia",
+    "Denmark",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Eritrea",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Ghana",
+    "Greece",
+    "Guatemala",
+    "Guinea",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "Hungary",
+    "India",
+    "Indonesia",
+    "Iraq",
+    "Ireland",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Kazakhstan",
+    "Kenya",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Libya",
+    "Lithuania",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Mali",
+    "Mauritania",
+    "Mauritius",
+    "Mexico",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Namibia",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Norway",
+    "Pakistan",
+    "Papua New Guinea",
+    "Peru",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Romania",
+    "Rwanda",
+    "Saudi Arabia",
+    "Senegal",
+    "Slovenia",
+    "South Africa",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Sweden",
+    "Switzerland",
+    "Tajikistan",
+    "Thailand",
+    "Tunisia",
+    "Turkey",
+    "Uganda",
+    "Ukraine",
+    "United Kingdom",
+    "Uruguay",
+    "Zambia",
+    "Zimbabwe"
+  ],
+  "unique_items": [
+    "Cassava",
+    "Maize",
+    "Plantains and others",
+    "Potatoes",
+    "Rice, paddy",
+    "Sorghum",
+    "Soybeans",
+    "Sweet potatoes",
+    "Wheat",
+    "Yams"
+  ],
+  "yield_stats": {
+    "mean": 58898.17,
+    "median": 34544.0,
+    "std": 55014.25,
+    "min": 50.0,
+    "max": 230338.0,
+    "q1": 18926.0,
+    "q3": 87287.5
+  },
+  "train_size": 19216,
+  "test_size": 4804
+}
