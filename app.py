@@ -284,7 +284,16 @@ def load_artifacts():
     meta_path = os.path.join(MODELS_DIR, "pipeline_metadata.json")
     if not os.path.exists(meta_path):
         return None, None, None, None
-    model = joblib.load(os.path.join(MODELS_DIR, "crop_yield_rf_model.pkl"))
+    
+    # Try to load RF model, fallback to DT if RF is missing (e.g. on GitHub/Cloud)
+    rf_path = os.path.join(MODELS_DIR, "crop_yield_rf_model.pkl")
+    dt_path = os.path.join(MODELS_DIR, "crop_yield_dt_model.pkl")
+    
+    if os.path.exists(rf_path):
+        model = joblib.load(rf_path)
+    else:
+        model = joblib.load(dt_path)
+        
     sc = joblib.load(os.path.join(MODELS_DIR, "scaler.pkl"))
     le = joblib.load(os.path.join(MODELS_DIR, "label_encoders.pkl"))
     with open(meta_path) as f:
