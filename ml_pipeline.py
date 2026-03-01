@@ -154,8 +154,8 @@ def run_pipeline():
         "Importance": dt_importances,
     }).sort_values(by="Importance", ascending=False)
 
-    joblib.dump(rf, os.path.join(MODELS_DIR, "crop_yield_rf_model.pkl"))
-    joblib.dump(trained_models["Decision Tree"], os.path.join(MODELS_DIR, "crop_yield_dt_model.pkl"))
+    joblib.dump(rf, os.path.join(MODELS_DIR, "crop_yield_rf_model.pkl"), compress=3)
+    joblib.dump(trained_models["Decision Tree"], os.path.join(MODELS_DIR, "crop_yield_dt_model.pkl"), compress=3)
     joblib.dump(trained_models["Linear Regression"], os.path.join(MODELS_DIR, "crop_yield_lr_model.pkl"))
     joblib.dump(scaler, os.path.join(MODELS_DIR, "scaler.pkl"))
     joblib.dump(label_encoders, os.path.join(MODELS_DIR, "label_encoders.pkl"))
