@@ -102,18 +102,18 @@ st.markdown("""
         box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
     .card-label {
-        font-size: 0.7rem;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.6px;
-        color: #64748b;
-        margin-bottom: 16px;
+        letter-spacing: 0.8px;
+        color: #334155;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
     .card-label .dot {
-        width: 8px; height: 8px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         display: inline-block;
     }
@@ -143,12 +143,12 @@ st.markdown("""
         box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
     .prep-chip .chip-title {
-        font-size: 0.7rem;
-        font-weight: 600;
+        font-size: 0.85rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.6px;
+        letter-spacing: 0.8px;
         color: #166534;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     .prep-chip .chip-body {
         font-size: 0.85rem;
@@ -178,12 +178,12 @@ st.markdown("""
         min-width: 380px;
     }
     .result-box .r-label {
-        font-size: 0.72rem;
+        font-size: 0.85rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
+        letter-spacing: 1px;
         color: #64748b;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     .result-box .r-value {
         font-size: 2.8rem;
@@ -265,12 +265,12 @@ st.markdown("""
 
     /* ── Section heading ── */
     .sec-heading {
-        font-size: 0.78rem;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #94a3b8;
-        margin-bottom: 12px;
+        letter-spacing: 1px;
+        color: #475569;
+        margin-bottom: 16px;
     }
 </style>
 """, unsafe_allow_html=True)
