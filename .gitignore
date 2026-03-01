@@ -15,11 +15,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Large model files (regenerate with: python3 ml_pipeline.py)
-*.h5
-*.model
-*.pb
-*.pkl
 
 # Mac system files
 .DS_Store
