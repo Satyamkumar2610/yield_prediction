@@ -19,7 +19,6 @@ venv.bak/
 *.h5
 *.model
 *.pb
-models/crop_yield_rf_model.pkl
 
 # Mac system files
 .DS_Store

@@ -1,44 +1,27 @@
-"""
-Crop Yield Predictor
-====================
-Accept crop, soil & weather data → preprocess (encode + scale) → predict → display.
-"""
-
 import os
 import json
 import numpy as np
 import pandas as pd
 import joblib
 import streamlit as st
-
-# ── Paths ──
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "models")
-
-# ── Page Config ──
 st.set_page_config(
     page_title="Crop Yield Predictor",
     page_icon="🌾",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-
-# ──────────────────────────────────────
-# PROFESSIONAL CSS
-# ──────────────────────────────────────
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
     /* Reset & base */
     html, body, [class*="css"] {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         color: #1e293b;
     }
     #MainMenu, footer, header { visibility: hidden; }
-
     .stApp { background: #f1f5f2; }
-
     /* ── Navbar ── */
     .navbar {
         display: flex;
@@ -71,14 +54,12 @@ st.markdown("""
         border-radius: 12px;
         letter-spacing: 0.3px;
     }
-
     /* ── Page container ── */
     .page-wrap {
         max-width: 1100px;
         margin: 0 auto;
         padding: 28px 0 40px 0;
     }
-
     /* ── Page title ── */
     .page-title {
         font-size: 1.5rem;
@@ -92,7 +73,6 @@ st.markdown("""
         margin-bottom: 24px;
         line-height: 1.5;
     }
-
     /* ── Card ── */
     .card {
         background: #ffffff;
@@ -120,14 +100,12 @@ st.markdown("""
     .dot-green  { background: #22c55e; }
     .dot-blue   { background: #3b82f6; }
     .dot-amber  { background: #f59e0b; }
-
     /* ── Horizontal Rule ── */
     .hr {
         border: none;
         border-top: 1px solid #e2e8f0;
         margin: 28px 0;
     }
-
     /* ── Preprocessing chips ── */
     .prep-row {
         display: flex;
@@ -163,7 +141,6 @@ st.markdown("""
         font-size: 0.82rem;
         font-family: 'SF Mono', 'Fira Code', monospace;
     }
-
     /* ── Result Section ── */
     .result-section {
         text-align: center;
@@ -208,7 +185,6 @@ st.markdown("""
     .b-high   { background: #dcfce7; color: #166534; }
     .b-medium { background: #fef9c3; color: #854d0e; }
     .b-low    { background: #fee2e2; color: #991b1b; }
-
     /* ── Summary row ── */
     .summary-row {
         display: flex;
@@ -239,7 +215,6 @@ st.markdown("""
         font-weight: 600;
         color: #334155;
     }
-
     /* ── Button override ── */
     .stButton > button {
         background: #166534 !important;
@@ -255,14 +230,12 @@ st.markdown("""
     .stButton > button:hover {
         background: #15803d !important;
     }
-
     /* ── Input labels ── */
     .stSelectbox label, .stNumberInput label {
         font-size: 0.82rem !important;
         font-weight: 500 !important;
         color: #475569 !important;
     }
-
     /* ── Section heading ── */
     .sec-heading {
         font-size: 1rem;
@@ -274,39 +247,26 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
-
-# ──────────────────────────────────────
-# LOAD ARTIFACTS
-# ──────────────────────────────────────
 @st.cache_resource
 def load_artifacts():
     meta_path = os.path.join(MODELS_DIR, "pipeline_metadata.json")
     if not os.path.exists(meta_path):
         return None, None, None, None
-    
-    # Try to load RF model, fallback to DT if RF is missing (e.g. on GitHub/Cloud)
     rf_path = os.path.join(MODELS_DIR, "crop_yield_rf_model.pkl")
     dt_path = os.path.join(MODELS_DIR, "crop_yield_dt_model.pkl")
-    
     if os.path.exists(rf_path):
         model = joblib.load(rf_path)
     else:
         model = joblib.load(dt_path)
-        
     sc = joblib.load(os.path.join(MODELS_DIR, "scaler.pkl"))
     le = joblib.load(os.path.join(MODELS_DIR, "label_encoders.pkl"))
     with open(meta_path) as f:
         meta = json.load(f)
     return model, sc, le, meta
-
 model, scaler, label_encoders, meta = load_artifacts()
-
 if model is None:
     st.error("Model artifacts not found. Run `python3 ml_pipeline.py` first to train models.")
     st.stop()
-
-
 def yield_category(v):
     if v >= 50000:
         return "HIGH YIELD", "b-high"
@@ -314,11 +274,6 @@ def yield_category(v):
         return "MEDIUM YIELD", "b-medium"
     else:
         return "LOW YIELD", "b-low"
-
-
-# ──────────────────────────────────────
-# NAVBAR
-# ──────────────────────────────────────
 st.markdown("""
 <div class="navbar">
     <div class="brand">
@@ -327,23 +282,11 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
 st.markdown("")
-
-# ──────────────────────────────────────
-# PAGE TITLE
-# ──────────────────────────────────────
 st.markdown('<div class="page-title">Predict Crop Yield</div>', unsafe_allow_html=True)
 st.markdown('<div class="page-desc">Provide crop, weather, and agricultural details below. The system will encode categorical inputs, scale numerical features, and predict yield using a Random Forest model.</div>', unsafe_allow_html=True)
-
-
-# ──────────────────────────────────────
-# INPUT FORM — 3 grouped cards
-# ──────────────────────────────────────
 st.markdown('<div class="sec-heading">Input Parameters</div>', unsafe_allow_html=True)
-
 c1, c2, c3 = st.columns(3, gap="medium")
-
 with c1:
     st.markdown("""
     <div class="card">
@@ -352,7 +295,6 @@ with c1:
     """, unsafe_allow_html=True)
     area = st.selectbox("Country / Region", meta["unique_areas"])
     item = st.selectbox("Crop Type", meta["unique_items"])
-
 with c2:
     st.markdown("""
     <div class="card">
@@ -361,7 +303,6 @@ with c2:
     """, unsafe_allow_html=True)
     rainfall = st.number_input("Average Rainfall (mm/year)", min_value=0.0, value=1100.0, step=10.0)
     temp = st.number_input("Average Temperature (°C)", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
-
 with c3:
     st.markdown("""
     <div class="card">
@@ -370,23 +311,12 @@ with c3:
     """, unsafe_allow_html=True)
     pesticides = st.number_input("Pesticides Used (tonnes)", min_value=0.0, value=500.0, step=10.0)
     year = st.number_input("Year", min_value=1990, max_value=2050, value=2020, step=1)
-
 st.markdown("")
 predict_clicked = st.button("Run Prediction", use_container_width=True)
-
-
-# ──────────────────────────────────────
-# PREPROCESS → PREDICT → DISPLAY
-# ──────────────────────────────────────
 if predict_clicked:
-
     st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
-
-    # ── Step 1: Encode ──
     area_encoded = label_encoders["Area"].transform([area])[0]
     item_encoded = label_encoders["Item"].transform([item])[0]
-
-    # ── Step 2: Build feature vector ──
     input_df = pd.DataFrame({
         "Area": [area_encoded],
         "Item": [item_encoded],
@@ -395,14 +325,9 @@ if predict_clicked:
         "pesticides_tonnes": [pesticides],
         "avg_temp": [temp],
     })
-
-    # ── Step 3: Scale ──
     num_cols = ["average_rain_fall_mm_per_year", "pesticides_tonnes", "avg_temp", "Year"]
     input_df[num_cols] = scaler.transform(input_df[num_cols])
-
-    # ── Show preprocessing ──
     st.markdown('<div class="sec-heading">Preprocessing Applied</div>', unsafe_allow_html=True)
-
     st.markdown(f"""
     <div class="prep-row">
         <div class="prep-chip">
@@ -420,16 +345,10 @@ if predict_clicked:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
     st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
-
-    # ── Step 4: Predict ──
     predicted_yield = model.predict(input_df)[0]
     cat_label, cat_class = yield_category(predicted_yield)
-
-    # ── Display prediction ──
     st.markdown('<div class="sec-heading">Prediction Output</div>', unsafe_allow_html=True)
-
     st.markdown(f"""
     <div class="result-section">
         <div class="result-box">
@@ -439,8 +358,6 @@ if predict_clicked:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-    # ── Summary row with input echo ──
     st.markdown(f"""
     <div class="summary-row">
         <div class="summary-item">
