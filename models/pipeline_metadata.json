@@ -52,73 +52,73 @@
   "model_results": [
     {
       "model": "Linear Regression",
-      "MAE": 42973.5,
-      "RMSE": 53843.07,
-      "R2": 0.0379
+      "MAE": 18642.8,
+      "RMSE": 25870.37,
+      "R2": 0.7753
     },
     {
       "model": "Decision Tree",
-      "MAE": 3572.49,
-      "RMSE": 10465.96,
-      "R2": 0.9637
+      "MAE": 3672.02,
+      "RMSE": 11123.46,
+      "R2": 0.9585
     },
     {
       "model": "Random Forest",
-      "MAE": 3380.47,
-      "RMSE": 8404.44,
-      "R2": 0.9766
+      "MAE": 3254.45,
+      "RMSE": 7763.95,
+      "R2": 0.9798
     }
   ],
   "feature_importance_rf": [
     {
       "Feature": "Item",
-      "Importance": 0.64983996708425
+      "Importance": 0.6486403052190814
     },
     {
       "Feature": "pesticides_tonnes",
-      "Importance": 0.09604560991894148
+      "Importance": 0.10112874583668362
     },
     {
       "Feature": "average_rain_fall_mm_per_year",
-      "Importance": 0.08079212505259901
+      "Importance": 0.08253939497342584
     },
     {
       "Feature": "Area",
-      "Importance": 0.07903457206467612
+      "Importance": 0.0744685875426645
     },
     {
       "Feature": "avg_temp",
-      "Importance": 0.06654659977810247
+      "Importance": 0.06610248095684355
     },
     {
       "Feature": "Year",
-      "Importance": 0.02774112610143096
+      "Importance": 0.027120485471301047
     }
   ],
   "feature_importance_dt": [
     {
       "Feature": "Item",
-      "Importance": 0.6495050702754321
+      "Importance": 0.6490190067337664
     },
     {
       "Feature": "pesticides_tonnes",
-      "Importance": 0.08972661006527186
-    },
-    {
-      "Feature": "Area",
-      "Importance": 0.08730711333463483
+      "Importance": 0.1102463480441488
     },
     {
       "Feature": "average_rain_fall_mm_per_year",
-      "Importance": 0.08328097138246564
+      "Importance": 0.08437232328680275
+    },
+    {
+      "Feature": "Area",
+      "Importance": 0.07608075916573466
     },
     {
       "Feature": "avg_temp",
-      "Importance": 0.060662805243191606
+      "Importance": 0.05281941002230738
     },
     {
       "Feature": "Year",
-      "Importance": 0.02951742969900405
+      "Importance": 0.027462152747239933
     }
   ],
   "feature_names": [

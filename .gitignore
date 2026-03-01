@@ -19,6 +19,8 @@ venv.bak/
 *.h5
 *.model
 *.pb
+*.pkl
+cleandata/
 
 # Mac system files
 .DS_Store
