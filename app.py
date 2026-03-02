@@ -301,15 +301,15 @@ with c2:
         <div class="card-label"><span class="dot dot-blue"></span> WEATHER DATA</div>
     </div>
     """, unsafe_allow_html=True)
-    rainfall = st.number_input("Average Rainfall (mm/year)", min_value=0.0, value=1100.0, step=10.0)
-    temp = st.number_input("Average Temperature (°C)", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+    rainfall = st.number_input("Average Rainfall (mm/year)", min_value=0.0, max_value=10000.0, value=1100.0, step=10.0)
+    temp = st.number_input("Average Temperature (°C)", min_value=-10.0, max_value=60.0, value=22.0, step=0.1)
 with c3:
     st.markdown("""
     <div class="card">
         <div class="card-label"><span class="dot dot-amber"></span> AGRICULTURAL INPUTS</div>
     </div>
     """, unsafe_allow_html=True)
-    pesticides = st.number_input("Pesticides Used (tonnes)", min_value=0.0, value=500.0, step=10.0)
+    pesticides = st.number_input("Pesticides Used (tonnes)", min_value=0.0, max_value=5000000.0, value=500.0, step=10.0)
     year = st.number_input("Year", min_value=1990, max_value=2050, value=2020, step=1)
 st.markdown("")
 predict_clicked = st.button("Run Prediction", use_container_width=True)
@@ -347,13 +347,14 @@ if predict_clicked:
     """, unsafe_allow_html=True)
     st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
     predicted_yield = model.predict(input_df)[0]
+    predicted_yield_kg = predicted_yield * 0.1
     cat_label, cat_class = yield_category(predicted_yield)
     st.markdown('<div class="sec-heading">Prediction Output</div>', unsafe_allow_html=True)
     st.markdown(f"""
     <div class="result-section">
         <div class="result-box">
             <div class="r-label">Predicted Crop Yield</div>
-            <div class="r-value">{predicted_yield:,.0f} <span class="r-unit">hg/ha</span></div>
+            <div class="r-value">{predicted_yield_kg:,.0f} <span class="r-unit">kg/ha</span></div>
             <div><span class="r-badge {cat_class}">{cat_label}</span></div>
         </div>
     </div>
