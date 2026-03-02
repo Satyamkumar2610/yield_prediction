@@ -1,47 +1,85 @@
 # 🌾 Crop Yield Prediction
 
-A machine learning pipeline for forecasting agricultural crop yields based on historical weather patterns, pesticide usage, and regional crop records.
+> A machine learning pipeline for agricultural productivity forecasting using ensemble learning methods.
 
-> **Authors:** Daksh Yadav · Satyam Kumar · Adarsh · Himank  
-> **Institution:** B.Tech — System Design Project (2026)
-
----
-
-## Project Structure
-
-**`raw_data/`**  
-Contains the original datasets collected from different sources — weather data, pesticide usage, historical crop yield records, etc.
-
-**`cleandata/`**  
-Includes the processed and merged datasets generated after running the cleaning and preprocessing pipeline.
-
-**`crop_yield_prediction.ipynb`**  
-The main notebook where everything happens:
-- Exploratory Data Analysis (EDA)
-- Data cleaning and preprocessing
-- Feature preparation
-- Training baseline models (Decision Tree & Random Forest)
-- Model evaluation
-
-**`Model Artifacts` (`*_model.pkl`, `scaler.pkl`, `label_encoders.pkl`)**  
-These are the saved models and preprocessing objects. They're exported so they can be loaded directly into a future web app without retraining.
+**Authors:** Satyam Kumar · Daksh Yadav · Adarsh · Himank  
+**Repository:** [github.com/Satyamkumar2610/yield_prediction](https://github.com/Satyamkumar2610/yield_prediction)
 
 ---
 
-## Data Pipeline Overview
+## 📌 Overview
 
-The raw datasets weren't perfectly aligned, so some preprocessing was necessary before training:
+Agriculture is the backbone of food security for billions of people — yet accurately predicting crop yields before or during a growing season remains a persistent challenge. Yield outcomes depend on a complex interplay of variables: regional climate, rainfall, temperature fluctuations, pesticide usage, and crop variety, many of which interact in non-linear ways.
 
-- Standardized column names and aligned schemas across datasets
-- Removed irrelevant administrative rows and noisy columns
-- Handled missing numerical values using median imputation
-- Encoded categorical variables (`Area` and `Item`) using label encoding (kept simple since tree-based models don't require one-hot encoding)
-
-The focus here was simplicity and reproducibility — nothing overly complex at this stage.
+This project applies **machine learning** to a curated multi-source dataset to demonstrate that high-accuracy yield prediction is achievable with well-engineered data pipelines and classical ensemble methods. The pipeline covers everything from raw data ingestion to model serialization, and is designed to plug directly into a future web-based prediction interface.
 
 ---
 
-## Getting Started
+## 🗂️ Project Structure
+
+```
+yield_prediction/
+│
+├── raw_data/                       # Original datasets: weather, pesticide usage, yield records
+├── cleandata/                      # Processed & merged datasets from the preprocessing pipeline
+│
+├── crop_yield_prediction.ipynb     # Main notebook: EDA, preprocessing, training, evaluation
+│
+├── rf_model.pkl                    # Trained Random Forest Regressor
+├── dt_model.pkl                    # Trained Decision Tree Regressor
+├── scaler.pkl                      # Fitted StandardScaler for numerical normalization
+└── label_encoders.pkl              # Fitted LabelEncoders for Area and Item features
+```
+
+---
+
+## 📊 Data Pipeline
+
+The raw datasets originated from multiple sources and weren't natively compatible in schema or format. A structured preprocessing pipeline was built to standardize and merge them into a single clean training corpus.
+
+**Data Sources**
+- Historical crop yield records (quantity per area, by crop type and region)
+- Weather / climate data (temperature, rainfall, seasonal indicators)
+- Pesticide usage data (application rates by crop and region)
+
+**Preprocessing Steps**
+- Standardized column names and aligned schemas across all raw datasets
+- Removed irrelevant administrative rows and noisy/redundant columns
+- Handled missing numerical values using **median imputation**
+- Encoded categorical variables (`Area`, `Item`) using **Label Encoding** — kept simple since tree-based models don't require one-hot encoding
+
+The focus was on simplicity and reproducibility. Nothing overly complex at this stage — just a clean, merged dataset that can serve as a reliable baseline and is easy to audit or extend.
+
+---
+
+## 🔍 Exploratory Data Analysis
+
+EDA was conducted inside the main notebook and covered:
+
+- Distribution analysis of numerical features (yield quantities, weather variables, pesticide usage)
+- Correlation heatmaps to identify multicollinearity and feature relevance
+- Group-level aggregations by crop type (`Item`) and region (`Area`)
+- Outlier detection and treatment in yield and weather variables
+- Integrity validation of the merged dataset post-preprocessing
+
+---
+
+## 🤖 Models
+
+Two models were trained and evaluated as part of this project:
+
+| Model | R² Score | Strengths | Limitations |
+|-------|----------|-----------|-------------|
+| **Random Forest Regressor** | **~0.98** | High accuracy, handles non-linearity, robust to overfitting | Less interpretable, higher compute cost |
+| Decision Tree Regressor | < 0.98 | Highly interpretable, fast to train | Prone to overfitting, lower generalization |
+
+**Random Forest** was selected as the primary model due to its superior ability to generalize across diverse feature interactions and its inherent resistance to overfitting through ensemble averaging.
+
+> ⚠️ **Important:** The R² of 0.98 is based on a single train-test split without cross-validation. This result may be optimistic. Rigorous k-fold cross-validation is planned before drawing conclusions about real-world generalization.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -59,24 +97,27 @@ jupyter notebook crop_yield_prediction.ipynb
 
 ### Making Predictions with Saved Artifacts
 
+The inference workflow mirrors the exact preprocessing applied at training time — ensuring prediction consistency.
+
 ```python
 import pickle
 import numpy as np
 
-# 1. Load encoders and encode categorical inputs
+# Step 1 — Encode categorical inputs
 with open("label_encoders.pkl", "rb") as f:
     label_encoders = pickle.load(f)
 
 area_encoded = label_encoders["Area"].transform(["India"])
 item_encoded = label_encoders["Item"].transform(["Wheat"])
 
-# 2. Load scaler and normalize numerical features
+# Step 2 — Normalize numerical features
 with open("scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
-scaled_features = scaler.transform([[avg_temp, rainfall, pesticide_usage]])
+numerical_features = [[avg_temp, rainfall, pesticide_usage]]
+scaled_features = scaler.transform(numerical_features)
 
-# 3. Load model and predict
+# Step 3 — Load model and predict
 with open("rf_model.pkl", "rb") as f:
     model = pickle.load(f)
 
@@ -87,25 +128,25 @@ print(f"Predicted Yield: {prediction[0]:.2f} hg/ha")
 
 ---
 
-## Model Performance
+## 🔭 Next Steps
 
-A Random Forest Regressor was used as the primary baseline model. It performed surprisingly well straight away:
-
-- **R² ≈ 0.98**
-
-A Decision Tree model was also trained for comparison and showed strong performance, though Random Forest generalized better overall.
-
-> ⚠️ **Note:** This result is based on a single train-test split. Cross-validation is planned to confirm how well the model generalizes to unseen data.
+- [ ] Implement k-fold cross-validation (k=5 or k=10) for robust performance estimates
+- [ ] Hyperparameter tuning with `GridSearchCV` / `RandomizedSearchCV`
+- [ ] Feature importance analysis to identify the most influential predictors
+- [ ] SHAP (SHapley Additive exPlanations) integration for model explainability
+- [ ] Web interface using Flask/FastAPI + React or Streamlit, powered by the serialized `.pkl` artifacts
+- [ ] Explore Gradient Boosting models (XGBoost, LightGBM) for further accuracy improvements
+- [ ] Expand dataset with more recent years and additional regions to improve generalization
 
 ---
 
-## Next Steps
+## 💡 Why This Matters
 
-- [ ] Hyperparameter tuning
-- [ ] Cross-validation for more robust evaluation
-- [ ] Feature importance analysis
-- [ ] Model explainability (SHAP or similar tools)
-- [ ] Integration into a web interface
+- **Food Security** — Better forecasts help governments and NGOs anticipate shortfalls and pre-position aid before crises occur.
+- **Farmer Empowerment** — Smallholder farmers benefit from advance yield knowledge for seed investment, irrigation planning, and market timing decisions.
+- **Supply Chain Efficiency** — Accurate forecasts reduce post-harvest losses and inventory mismatches across the food supply chain.
+- **Climate Adaptation** — As climate change introduces greater variability, data-driven models become an essential tool for adaptive agricultural policy.
+- **Scalability** — Unlike expert surveys, a trained ML model can generate predictions for hundreds of crop-region combinations in seconds.
 
 ---
 
@@ -117,3 +158,9 @@ A Decision Tree model was also trained for comparison and showed strong performa
 | Daksh Yadav | 2401010139 |
 | Adarsh | 2401010026 |
 | Himank | 2401010187 |
+
+---
+
+## 📄 License
+
+This project is for academic purposes only.
